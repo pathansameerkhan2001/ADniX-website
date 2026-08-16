@@ -1,0 +1,108 @@
+import { IndustryItem } from '@/types';
+
+export const industriesData: IndustryItem[] = [
+  {
+    id: 'healthcare',
+    name: 'Hospitals & Clinics',
+    icon: 'Stethoscope',
+    description: 'Patient appointment booking, local search visibility, and doctor profile branding.',
+    benefits: [
+      'Help patients find your clinic fast and book appointments online.',
+      'Improve local visibility and attract nearby patients in Kadapa.',
+      'Build trust with a professional website and doctor profiles.',
+    ],
+    ctaText: 'Get Strategy for Hospitals & Clinics',
+    highlight: 'Help patients find your clinic fast and book appointments online.',
+  },
+  {
+    id: 'restaurants',
+    name: 'Restaurants & Cafes',
+    icon: 'UtensilsCrossed',
+    description: 'Digital QR menus, table booking systems, and mouth-watering social media presence to drive local foot traffic.',
+    benefits: [
+      'Attract local food lovers with vibrant media and 5-star Google Map rankings.',
+      'Streamline table reservations and direct WhatsApp takeaway orders.',
+      'Showcase interactive mobile digital menus with instant item updates.',
+    ],
+    ctaText: 'Get Strategy for Restaurants & Cafes',
+    highlight: 'Attract local food lovers with vibrant media and 5-star map rankings.',
+  },
+  {
+    id: 'education',
+    name: 'Schools & Colleges',
+    icon: 'GraduationCap',
+    description: 'Admission inquiry funnels, parent information portals, and institutional reputation building.',
+    benefits: [
+      'Boost student admissions each academic season with targeted outreach.',
+      'Provide parents with seamless digital prospectuses and fee inquiry forms.',
+      'Build institutional credibility with a modern accredited website.',
+    ],
+    ctaText: 'Get Strategy for Schools & Colleges',
+    highlight: 'Boost student admissions each academic season with targeted outreach.',
+  },
+  {
+    id: 'retail',
+    name: 'Retail Stores & Shops',
+    icon: 'ShoppingBag',
+    description: 'Digital product catalogs, WhatsApp shopping integration, and local neighborhood promotion campaigns.',
+    benefits: [
+      'Convert local foot traffic and online inquiries into repeat buyers.',
+      'Enable customers to browse daily stock and place WhatsApp orders.',
+      'Run seasonal discount and festive promotion campaigns across Kadapa.',
+    ],
+    ctaText: 'Get Strategy for Retail Stores & Shops',
+    highlight: 'Convert local foot traffic and online inquiries into repeat buyers.',
+  },
+  {
+    id: 'hospitality',
+    name: 'Hotels & Resorts',
+    icon: 'Hotel',
+    description: 'Direct room booking inquiries, photo/video walkthroughs, and banquet event lead generation.',
+    benefits: [
+      'Attract travelers and event bookings with high-converting visual showcases.',
+      'Reduce commission costs with direct customer booking channels.',
+      'Manage guest reviews and Google Maps reputation effectively.',
+    ],
+    ctaText: 'Get Strategy for Hotels & Resorts',
+    highlight: 'Attract travelers and event bookings with high-converting online showcases.',
+  },
+  {
+    id: 'real-estate',
+    name: 'Real Estate & Builders',
+    icon: 'Building2',
+    description: 'Property project landing pages, high-intent buyer leads, and interactive floor plan showcases.',
+    benefits: [
+      'Generate verified buyer leads for plots, apartments, and commercial sites.',
+      'Showcase project walkthroughs, amenity lists, and downloadable brochures.',
+      'Auto-route incoming buyer leads directly to your sales team WhatsApp.',
+    ],
+    ctaText: 'Get Strategy for Real Estate & Builders',
+    highlight: 'Generate verified buyer leads for plots, apartments, and commercial sites.',
+  },
+  {
+    id: 'professional-services',
+    name: 'Professional Services',
+    icon: 'Briefcase',
+    description: 'Authority-building websites, client consultation booking, and reputation management for CAs, lawyers, consultants, and architects.',
+    benefits: [
+      'Establish authority and client trust with sleek portfolio and credential pages.',
+      'Automate initial client consultation bookings and intake inquiries.',
+      'Dominate local professional search keywords across Andhra Pradesh.',
+    ],
+    ctaText: 'Get Strategy for Professional Services',
+    highlight: 'Establish authority and client trust with sleek portfolio & booking pages.',
+  },
+  {
+    id: 'local-businesses',
+    name: 'Salons, Gyms & Local SMBs',
+    icon: 'Sparkles',
+    description: 'Membership registration funnels, appointment scheduling, and localized hyper-targeted promotions.',
+    benefits: [
+      'Fill weekly slots and build a loyal local neighborhood customer base.',
+      'Promote transformation stories, package deals, and festive offers.',
+      'Simplify recurring membership renewals via automated reminders.',
+    ],
+    ctaText: 'Get Strategy for Salons, Gyms & Local SMBs',
+    highlight: 'Fill weekly slots and build a loyal local neighborhood customer base.',
+  },
+];

@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 97%;
+    --foreground: 0 0% 7%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-ivory-50 text-charcoal-900 selection:bg-gold-500 selection:text-charcoal-950;
+    overflow-x: clip;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Accessible focus indicators in Champagne Gold */
+  :focus-visible {
+    @apply outline-none ring-2 ring-gold-500 ring-offset-2;
+  }
+}
+
+@layer utilities {
+  /* Subtle glass card backdrops */
+  .glass-card-ivory {
+    background: rgba(250, 248, 243, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-card-dark {
+    background: rgba(17, 17, 17, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Subtle dot grid pattern */
+  .bg-subtle-pattern {
+    background-image: radial-gradient(rgba(119, 115, 108, 0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Subtle dark grid pattern for Hero */
+  .bg-dark-pattern {
+    background-image: radial-gradient(rgba(217, 164, 65, 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* iOS safe area utility classes */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .bottom-safe {
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+  }
+  .right-safe {
+    right: max(1.25rem, env(safe-area-inset-right, 1.25rem));
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1E9DC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #DDD8CE;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D9A441;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
