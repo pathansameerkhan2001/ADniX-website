@@ -23,45 +23,56 @@ export function Navbar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change or ESC
+  // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when mobile drawer is open & handle ESC
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
     };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-ivory-50/95 backdrop-blur-md shadow-soft-sm border-b border-borderGray h-[76px] sm:h-[80px]'
-          : 'bg-ivory-50/90 backdrop-blur-sm border-b border-borderGray/70 h-[80px] sm:h-[84px]'
-      } flex items-center`}
+          ? 'bg-ivory-50/95 backdrop-blur-md shadow-soft-sm border-b border-borderGray h-[72px] sm:h-[78px] lg:h-[80px]'
+          : 'bg-ivory-50/90 backdrop-blur-sm border-b border-borderGray/70 h-[76px] sm:h-[82px] lg:h-[84px]'
+      } flex items-center pt-safe`}
     >
       <Container size="xl" className="h-full">
         <nav className="h-full flex items-center justify-between" aria-label="Main Navigation">
-          {/* Brand Logo: Sharp, Large & Natural Blend */}
+          {/* Brand Logo: Clean, Proportional & Vertically Centered */}
           <Link
             href="/"
             className="flex items-center shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 rounded-lg p-0 transition-opacity hover:opacity-95"
             aria-label="ADNIX Home"
           >
-            <div className="relative flex items-center h-[42px] sm:h-[48px] md:h-[52px] lg:h-[56px] w-auto">
+            <div className="relative flex items-center h-[40px] sm:h-[46px] md:h-[50px] lg:h-[54px] w-auto">
               <Image
                 src="/brand/adnix-logo.png"
                 alt="ADNIX - Digital Growth & Business Services"
                 width={280}
-                height={110}
+                height={109}
                 priority
                 className="h-full w-auto object-contain block"
               />
@@ -76,7 +87,7 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-2 text-[16px] xl:text-[17px] font-semibold rounded-xl transition-all relative ${
+                  className={`px-3.5 xl:px-4 py-2 text-[16px] xl:text-[17px] font-semibold rounded-xl transition-all relative ${
                     isActive
                       ? 'text-charcoal-950 font-bold bg-ivory-200/90'
                       : 'text-charcoal-800 hover:text-charcoal-950 hover:bg-ivory-200/60'
@@ -84,7 +95,7 @@ export function Navbar() {
                 >
                   {item.label}
                   {isActive && (
-                    <span className="absolute bottom-0 left-4 right-4 h-[3px] bg-gold-500 rounded-full" />
+                    <span className="absolute bottom-0 left-3.5 right-3.5 xl:left-4 xl:right-4 h-[3px] bg-gold-500 rounded-full" />
                   )}
                 </Link>
               );
@@ -106,13 +117,14 @@ export function Navbar() {
               </Button>
             </div>
 
-            {/* Mobile Menu Button - 44px+ touch target */}
+            {/* Mobile Menu Toggle Button: Hamburger by default, transforms to X when open */}
             <button
               type="button"
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-charcoal-900 hover:text-gold-600 hover:bg-ivory-200 focus:outline-none focus:ring-2 focus:ring-gold-500 transition-colors"
               aria-expanded={isOpen}
-              aria-label="Toggle navigation menu"
+              aria-controls="mobile-navigation-drawer"
+              aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -120,9 +132,15 @@ export function Navbar() {
         </nav>
       </Container>
 
-      {/* Mobile Drawer Menu with Safe-Area support and touch targets */}
+      {/* Mobile Navigation Drawer */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[76px] sm:top-[80px] bottom-0 bg-ivory-50/98 backdrop-blur-xl border-b border-borderGray shadow-soft-xl px-4 py-6 overflow-y-auto pb-safe transition-all duration-300 animate-in slide-in-from-top-2 z-50">
+        <div
+          id="mobile-navigation-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile Navigation"
+          className="lg:hidden fixed inset-x-0 top-[72px] sm:top-[78px] bottom-0 bg-ivory-50/98 backdrop-blur-xl border-b border-borderGray shadow-soft-xl px-4 py-6 overflow-y-auto pb-safe transition-all duration-300 animate-in slide-in-from-top-2 z-50"
+        >
           <Container size="sm">
             <div className="flex flex-col space-y-1.5">
               {siteConfig.navItems.map((item) => {
@@ -176,3 +194,4 @@ export function Navbar() {
     </header>
   );
 }
+

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -10,6 +10,21 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 
 export function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Gracefully ignore autoplay prevention by browser policy without console errors
+        });
+      }
+    }
+  }, []);
+
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-charcoal-950 text-white">
       {/* Ambient Dark & Gold Glows */}
@@ -68,7 +83,7 @@ export function Hero() {
               </Button>
             </div>
 
-            {/* 4 Value Badges in Dark Glass Cards with Gold Checkmarks: Wrap smoothly on all phones */}
+            {/* 4 Value Badges in Dark Glass Cards with Gold Checkmarks */}
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:flex sm:flex-wrap items-center gap-2.5 sm:gap-3.5 mt-7 sm:mt-8 pt-6 border-t border-charcoal-800 text-xs sm:text-sm text-muted-onDark font-medium w-full">
               <div className="flex items-center gap-2 bg-charcoal-900/80 px-3 py-2 rounded-xl border border-charcoal-800 backdrop-blur-sm shadow-soft-sm">
                 <CheckCircle2 className="w-4 h-4 text-gold-500 shrink-0" />
@@ -112,15 +127,17 @@ export function Hero() {
               {/* Inner Clipped Circle */}
               <div className="relative w-full h-full rounded-full overflow-hidden bg-charcoal-950 flex items-center justify-center">
                 <video
-                  src="/videos/adnix-hero.mp4"
+                  ref={videoRef}
                   autoPlay
                   muted
                   loop
                   playsInline
-                  preload="auto"
-                  className="w-full h-full object-cover object-center scale-[1.12] rounded-full"
+                  preload="metadata"
+                  className="w-full h-full object-cover object-center scale-[1.06] rounded-full"
                   aria-label="ADNIX Digital Growth Animation"
-                />
+                >
+                  <source src="/videos/adnix-hero.mp4" type="video/mp4" />
+                </video>
 
                 {/* Subtle dark vignette overlay to blend with circle edge */}
                 <div
@@ -144,3 +161,4 @@ export function Hero() {
     </section>
   );
 }
+

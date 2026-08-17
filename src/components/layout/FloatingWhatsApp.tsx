@@ -14,7 +14,7 @@ export function FloatingWhatsApp() {
         setIsVisible(true);
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [hasDismissed]);
 

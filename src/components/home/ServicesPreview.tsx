@@ -1,8 +1,5 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
   Layout,
   ShieldCheck,
@@ -91,12 +88,8 @@ export function ServicesPreview() {
             const stage = stageTags[idx];
 
             return (
-              <motion.div
+              <div
                 key={service.id}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
                 className="group relative bg-white rounded-3xl border border-borderGray p-6 flex flex-col justify-between transition-all duration-300 hover:border-gold-500/70 hover:shadow-soft-lg"
               >
                 <div>
@@ -132,13 +125,13 @@ export function ServicesPreview() {
                 <div className="pt-4 border-t border-borderGray/60 mt-auto">
                   <Link
                     href={`/services#${service.id}`}
-                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-gold-600 group-hover:text-charcoal-900 group-hover:translate-x-1 transition-all"
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-gold-600 group-hover:text-charcoal-950 group-hover:translate-x-1 transition-all"
                   >
                     <span>Explore Deliverables</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -146,7 +139,6 @@ export function ServicesPreview() {
         {/* Mobile View: Connected Vertical Sequential Timeline */}
         <div className="md:hidden relative pl-6 space-y-6 border-l-2 border-dashed border-gold-500/40 ml-4 my-6">
           {servicesData.map((service, idx) => {
-            const stepNum = String(idx + 1).padStart(2, '0');
             const stage = stageTags[idx];
 
             return (
@@ -207,3 +199,4 @@ export function ServicesPreview() {
     </section>
   );
 }
+
