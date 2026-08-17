@@ -137,17 +137,17 @@ export function ServicesPreview() {
         </div>
 
         {/* Mobile View: Connected Vertical Sequential Timeline */}
-        <div className="md:hidden relative pl-6 space-y-6 border-l-2 border-dashed border-gold-500/40 ml-4 my-6">
+        <div className="md:hidden relative pl-5 sm:pl-6 space-y-5 sm:space-y-6 border-l-2 border-dashed border-gold-500/40 ml-3.5 sm:ml-4 my-6">
           {servicesData.map((service, idx) => {
             const stage = stageTags[idx];
 
             return (
               <div
                 key={service.id}
-                className="relative bg-white rounded-2xl border border-borderGray p-5 shadow-soft-sm"
+                className="relative bg-white rounded-2xl border border-borderGray p-4 sm:p-5 shadow-soft-sm"
               >
                 {/* Connecting Node on the Left Line */}
-                <div className="absolute -left-[35px] top-5 w-6 h-6 rounded-full bg-charcoal-900 border-2 border-gold-500 text-gold-400 text-[10px] font-mono font-bold flex items-center justify-center shadow-soft-sm">
+                <div className="absolute -left-[31px] sm:-left-[35px] top-5 w-6 h-6 rounded-full bg-charcoal-900 border-2 border-gold-500 text-gold-400 text-[10px] font-mono font-bold flex items-center justify-center shadow-soft-sm">
                   {idx + 1}
                 </div>
 
