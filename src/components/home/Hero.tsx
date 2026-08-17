@@ -11,16 +11,61 @@ export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true;
-      videoRef.current.muted = true;
-      const playPromise = videoRef.current.play();
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+    video.loop = true;
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('webkit-playsinline', 'true');
+    video.setAttribute('muted', 'true');
+    video.setAttribute('autoplay', 'true');
+    video.setAttribute('loop', 'true');
+
+    const playVideo = () => {
+      const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Gracefully ignore autoplay prevention by browser policy without console errors
+          // If browser autoplay policy requires user interaction, listen for first touch/click
+          const unlockAutoplay = () => {
+            video.play().catch(() => {});
+            window.removeEventListener('touchstart', unlockAutoplay);
+            window.removeEventListener('click', unlockAutoplay);
+            window.removeEventListener('scroll', unlockAutoplay);
+          };
+          window.addEventListener('touchstart', unlockAutoplay, { once: true, passive: true });
+          window.addEventListener('click', unlockAutoplay, { once: true, passive: true });
+          window.addEventListener('scroll', unlockAutoplay, { once: true, passive: true });
         });
       }
-    }
+    };
+
+    // Attempt immediate autoplay
+    playVideo();
+
+    // Ensure continuous loop when video ends
+    const handleEnded = () => {
+      video.currentTime = 0;
+      playVideo();
+    };
+
+    // Replay if visibility changes or comes back to focus
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        playVideo();
+      }
+    };
+
+    video.addEventListener('ended', handleEnded);
+    video.addEventListener('canplay', playVideo);
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('canplay', playVideo);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   return (
@@ -141,7 +186,7 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* 6. HERO VIDEO: Below benefits on mobile (16:9 framed video), circular formation orb on desktop */}
+          {/* 6. HERO VIDEO: Always in beautiful Circle Formation Orb on both Mobile & Desktop */}
           <motion.div
             initial="hidden"
             animate="visible"
@@ -149,30 +194,30 @@ export function Hero() {
             className="w-full lg:w-[50%] xl:w-[52%] flex items-center justify-center lg:justify-end shrink-0 relative pt-4 lg:pt-0"
           >
             {/* Ambient Gold Halo Glow */}
-            <div className="absolute -inset-4 sm:-inset-6 lg:-inset-8 bg-gradient-to-tr from-gold-500/22 via-gold-600/10 to-charcoal-900/40 rounded-3xl lg:rounded-full blur-2xl lg:blur-3xl -z-10 transform scale-95" />
+            <div className="absolute -inset-4 sm:-inset-6 lg:-inset-8 bg-gradient-to-tr from-gold-500/22 via-gold-600/10 to-charcoal-900/40 rounded-full blur-2xl lg:blur-3xl -z-10 transform scale-95" />
 
-            {/* Desktop Decorative Orbital Rings (Shown only on lg screens) */}
+            {/* Decorative Orbital Rotating Rings */}
             <div
-              className="hidden lg:block absolute -inset-3.5 sm:-inset-6 rounded-full border border-gold-500/25 border-dashed pointer-events-none animate-[spin_60s_linear_infinite]"
+              className="absolute -inset-3 sm:-inset-5 rounded-full border border-gold-500/25 border-dashed pointer-events-none animate-[spin_60s_linear_infinite]"
               aria-hidden="true"
             />
             <div
-              className="hidden lg:block absolute -inset-1 rounded-full border border-gold-400/15 pointer-events-none"
+              className="absolute -inset-1 rounded-full border border-gold-400/15 pointer-events-none"
               aria-hidden="true"
             />
 
-            {/* Responsive Video Container: 16:9 framed box on mobile/tablet, circular formation orb on desktop */}
-            <div className="relative w-full max-w-lg lg:max-w-none aspect-video lg:aspect-square lg:w-[430px] xl:w-[470px] 2xl:w-[505px] rounded-2xl sm:rounded-3xl lg:rounded-full overflow-hidden shadow-glow-gold bg-charcoal-950 border-2 border-gold-500/50 p-1.5 sm:p-2 shrink-0 mx-auto lg:mx-0">
-              {/* Inner Clipped Container */}
-              <div className="relative w-full h-full rounded-xl sm:rounded-2xl lg:rounded-full overflow-hidden bg-charcoal-950 flex items-center justify-center">
+            {/* Circular Video Container on ALL screen sizes */}
+            <div className="relative w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] md:w-[380px] md:h-[380px] lg:w-[430px] lg:h-[430px] xl:w-[470px] xl:h-[470px] 2xl:w-[505px] 2xl:h-[505px] rounded-full overflow-hidden shadow-glow-gold bg-charcoal-950 border-2 border-gold-500/50 p-1.5 sm:p-2 shrink-0 mx-auto lg:mx-0">
+              {/* Inner Clipped Circle Container */}
+              <div className="relative w-full h-full rounded-full overflow-hidden bg-charcoal-950 flex items-center justify-center">
                 <video
                   ref={videoRef}
                   autoPlay
                   muted
                   loop
                   playsInline
-                  preload="metadata"
-                  className="w-full h-full object-cover object-center rounded-xl sm:rounded-2xl lg:rounded-full"
+                  preload="auto"
+                  className="w-full h-full object-cover object-center rounded-full scale-105"
                   aria-label="ADNIX Digital Growth Animation"
                 >
                   <source src="/videos/adnix-hero.mp4" type="video/mp4" />
@@ -180,7 +225,7 @@ export function Hero() {
 
                 {/* Subtle dark vignette overlay */}
                 <div
-                  className="absolute inset-0 rounded-xl sm:rounded-2xl lg:rounded-full pointer-events-none ring-1 ring-inset ring-gold-500/30 shadow-[inset_0_0_25px_rgba(8,8,8,0.6)]"
+                  className="absolute inset-0 rounded-full pointer-events-none ring-1 ring-inset ring-gold-500/30 shadow-[inset_0_0_25px_rgba(8,8,8,0.6)]"
                   aria-hidden="true"
                 />
 
