@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   MapPin,
   Phone,
@@ -16,6 +17,7 @@ import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { defaultViewport, fadeUp, smoothEase } from '@/components/motion/variants';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -34,18 +36,32 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-32 pb-24 bg-ivory-50 min-h-screen">
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-28 bg-ivory-50 min-h-screen">
       <Container size="xl">
-        <SectionHeading
-          badge="Get in Touch"
-          badgeVariant="gold"
-          title="Let's Discuss Your Digital Growth"
-          subtitle="Book a free 30-minute digital consultation for your business in Kadapa. No pushy sales pitch—just practical, actionable advice."
-        />
+        {/* Contact Hero */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          variants={fadeUp}
+        >
+          <SectionHeading
+            badge="Get in Touch"
+            badgeVariant="gold"
+            title="Let's Discuss Your Digital Growth"
+            subtitle="Book a free 30-minute digital consultation for your business in Kadapa. No pushy sales pitch—just practical, actionable advice."
+          />
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mt-8">
           {/* Left Column: Direct Contact Details & Kadapa Promise (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={defaultViewport}
+            transition={{ duration: 0.5, delay: 0.1, ease: smoothEase }}
+            className="lg:col-span-5 flex flex-col gap-6"
+          >
             <Card variant="default" padding="lg" className="bg-white border-borderGray shadow-soft-sm">
               <h3 className="text-xl font-bold text-charcoal-900 mb-2 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-gold-500" />
@@ -137,176 +153,199 @@ export default function ContactPage() {
                 Monday to Saturday, 9:30 AM – 7:30 PM IST
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Responsive Inquiry Form (7 cols) */}
-          <div className="lg:col-span-7">
+          {/* Right Column: Responsive Inquiry Form (7 cols, fades/slides up as one group) */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={defaultViewport}
+            transition={{ duration: 0.5, delay: 0.2, ease: smoothEase }}
+            className="lg:col-span-7"
+          >
             <Card variant="default" padding="lg" className="bg-white border-borderGray shadow-soft-md">
-              {submitted ? (
-                <div className="py-12 px-4 text-center">
-                  <div className="w-16 h-16 rounded-full bg-gold-500/20 text-gold-600 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle2 className="w-10 h-10" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-charcoal-900 mb-2">
-                    Consultation Request Received!
-                  </h3>
-                  <p className="text-sm text-muted max-w-md mx-auto mb-6 leading-relaxed">
-                    Thank you, <span className="font-semibold text-charcoal-900">{formData.name}</span>. Our Kadapa digital strategy team will contact you at <span className="font-semibold text-charcoal-900">{formData.phone}</span> shortly.
-                  </p>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setSubmitted(false);
-                      setFormData({
-                        name: '',
-                        phone: '',
-                        businessName: '',
-                        industry: 'Hospital & Clinic',
-                        service: 'Website Development',
-                        message: '',
-                      });
-                    }}
+              <AnimatePresence mode="wait">
+                {submitted ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.35, ease: smoothEase }}
+                    className="py-12 px-4 text-center"
                   >
-                    Submit Another Inquiry
-                  </Button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-                  <div>
-                    <h3 className="text-xl font-bold text-charcoal-900 mb-1">
-                      Request a Free Strategy Session
+                    <div className="w-16 h-16 rounded-full bg-gold-500/20 text-gold-600 flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle2 className="w-10 h-10" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-charcoal-900 mb-2">
+                      Consultation Request Received!
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted">
-                      Fill out this quick form and we&apos;ll prepare a customized growth roadmap for your business.
+                    <p className="text-sm text-muted max-w-md mx-auto mb-6 leading-relaxed">
+                      Thank you, <span className="font-semibold text-charcoal-900">{formData.name}</span>. Our Kadapa digital strategy team will contact you at <span className="font-semibold text-charcoal-900">{formData.phone}</span> shortly.
                     </p>
-                  </div>
-
-                  {/* Name & Phone */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setSubmitted(false);
+                        setFormData({
+                          name: '',
+                          phone: '',
+                          businessName: '',
+                          industry: 'Hospital & Clinic',
+                          service: 'Website Development',
+                          message: '',
+                        });
+                      }}
+                    >
+                      Submit Another Inquiry
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onSubmit={handleSubmit}
+                    className="space-y-4 sm:space-y-5"
+                  >
                     <div>
-                      <label htmlFor="name" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
-                        Your Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. Ramesh Reddy"
-                        className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all"
-                      />
+                      <h3 className="text-xl font-bold text-charcoal-900 mb-1">
+                        Request a Free Strategy Session
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted">
+                        Fill out this quick form and we&apos;ll prepare a customized growth roadmap for your business.
+                      </p>
                     </div>
 
-                    <div>
-                      <label htmlFor="phone" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
-                        Phone Number *
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+91 98765 43210"
-                        className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all font-mono"
-                      />
-                    </div>
-                  </div>
+                    {/* Name & Phone */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="name" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
+                          Your Full Name *
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="e.g. Ramesh Reddy"
+                          className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all"
+                        />
+                      </div>
 
-                  {/* Business Name & Industry */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="businessName" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
-                        Business / Organization Name
-                      </label>
-                      <input
-                        type="text"
-                        id="businessName"
-                        value={formData.businessName}
-                        onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                        placeholder="e.g. Kadapa Eye Clinic"
-                        className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all"
-                      />
+                      <div>
+                        <label htmlFor="phone" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
+                          Phone Number *
+                        </label>
+                        <input
+                          type="tel"
+                          id="phone"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          placeholder="+91 98765 43210"
+                          className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all font-mono"
+                        />
+                      </div>
                     </div>
 
+                    {/* Business Name & Industry */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="businessName" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
+                          Business / Organization Name
+                        </label>
+                        <input
+                          type="text"
+                          id="businessName"
+                          value={formData.businessName}
+                          onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                          placeholder="e.g. Kadapa Eye Clinic"
+                          className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="industry" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
+                          Your Industry
+                        </label>
+                        <select
+                          id="industry"
+                          value={formData.industry}
+                          onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                          className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all"
+                        >
+                          <option value="Hospitals & Clinics">Hospitals & Clinics</option>
+                          <option value="Restaurants & Cafes">Restaurants & Cafes</option>
+                          <option value="Schools & Colleges">Schools & Colleges</option>
+                          <option value="Retail Stores & Shops">Retail Stores & Shops</option>
+                          <option value="Hotels & Resorts">Hotels & Resorts</option>
+                          <option value="Real Estate & Builders">Real Estate & Builders</option>
+                          <option value="Professional Services">Professional Services</option>
+                          <option value="Salons, Gyms & SMBs">Salons, Gyms & Local SMBs</option>
+                          <option value="Other">Other Category</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Primary Service of Interest */}
                     <div>
-                      <label htmlFor="industry" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
-                        Your Industry
+                      <label htmlFor="service" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
+                        Service You Are Looking For
                       </label>
                       <select
-                        id="industry"
-                        value={formData.industry}
-                        onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                        id="service"
+                        value={formData.service}
+                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                         className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all"
                       >
-                        <option value="Hospitals & Clinics">Hospitals & Clinics</option>
-                        <option value="Restaurants & Cafes">Restaurants & Cafes</option>
-                        <option value="Schools & Colleges">Schools & Colleges</option>
-                        <option value="Retail Stores & Shops">Retail Stores & Shops</option>
-                        <option value="Hotels & Resorts">Hotels & Resorts</option>
-                        <option value="Real Estate & Builders">Real Estate & Builders</option>
-                        <option value="Professional Services">Professional Services</option>
-                        <option value="Salons, Gyms & SMBs">Salons, Gyms & Local SMBs</option>
-                        <option value="Other">Other Category</option>
+                        <option value="Website Development">01 Website Development</option>
+                        <option value="Website Management">02 Website Management</option>
+                        <option value="Branding & Creative Design">03 Branding & Creative Design</option>
+                        <option value="SEO & Local SEO">04 SEO & Local SEO</option>
+                        <option value="Social Media Marketing">05 Social Media Marketing</option>
+                        <option value="Digital Advertising">06 Digital Advertising (Google / Meta Ads)</option>
+                        <option value="Influencer Marketing">07 Influencer Marketing</option>
+                        <option value="Lead Generation">08 Complete Lead Generation Roadmap</option>
+                        <option value="All Services Package">All-in-One Growth Package</option>
                       </select>
                     </div>
-                  </div>
 
-                  {/* Primary Service of Interest */}
-                  <div>
-                    <label htmlFor="service" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
-                      Service You Are Looking For
-                    </label>
-                    <select
-                      id="service"
-                      value={formData.service}
-                      onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                      className="w-full h-12 px-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all"
-                    >
-                      <option value="Website Development">01 Website Development</option>
-                      <option value="Website Management">02 Website Management</option>
-                      <option value="Branding & Creative Design">03 Branding & Creative Design</option>
-                      <option value="SEO & Local SEO">04 SEO & Local SEO</option>
-                      <option value="Social Media Marketing">05 Social Media Marketing</option>
-                      <option value="Digital Advertising">06 Digital Advertising (Google / Meta Ads)</option>
-                      <option value="Influencer Marketing">07 Influencer Marketing</option>
-                      <option value="Lead Generation">08 Complete Lead Generation Roadmap</option>
-                      <option value="All Services Package">All-in-One Growth Package</option>
-                    </select>
-                  </div>
+                    {/* Message */}
+                    <div>
+                      <label htmlFor="message" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
+                        How Can We Help Your Business?
+                      </label>
+                      <textarea
+                        id="message"
+                        rows={3}
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="Tell us about your current digital challenges or goals..."
+                        className="w-full p-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all resize-none"
+                      />
+                    </div>
 
-                  {/* Message */}
-                  <div>
-                    <label htmlFor="message" className="block text-xs font-bold text-charcoal-900 uppercase tracking-wider mb-1.5">
-                      How Can We Help Your Business?
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={3}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell us about your current digital challenges or goals..."
-                      className="w-full p-4 rounded-xl border border-borderGray bg-ivory-50 text-charcoal-900 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-all resize-none"
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <div className="pt-2">
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      fullWidth
-                      icon={<Send className="w-4 h-4" />}
-                      className="min-h-[48px] font-semibold text-base shadow-glow-gold"
-                    >
-                      Request Free Strategy Session
-                    </Button>
-                  </div>
-                </form>
-              )}
+                    {/* Submit Button */}
+                    <div className="pt-2">
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        fullWidth
+                        icon={<Send className="w-4 h-4" />}
+                        className="min-h-[48px] font-semibold text-base shadow-glow-gold"
+                      >
+                        Request Free Strategy Session
+                      </Button>
+                    </div>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </Card>
-          </div>
+          </motion.div>
         </div>
       </Container>
     </div>

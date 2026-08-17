@@ -1,8 +1,12 @@
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight, MessageSquare, CheckCircle2, MapPin } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
+import { defaultViewport, fadeUp, smoothEase } from '@/components/motion/variants';
 
 export function FinalCTA() {
   return (
@@ -12,7 +16,13 @@ export function FinalCTA() {
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold-600/8 rounded-full blur-3xl pointer-events-none" />
 
       <Container size="xl">
-        <div className="relative z-10 max-w-3xl mx-auto text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          variants={fadeUp}
+          className="relative z-10 max-w-3xl mx-auto text-center"
+        >
           {/* Local Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-charcoal-900 border border-gold-500/30 text-gold-400 text-xs font-semibold mb-6">
             <MapPin className="w-3.5 h-3.5 text-gold-500" />
@@ -68,7 +78,7 @@ export function FinalCTA() {
               Talk to Us on WhatsApp
             </Button>
           </div>
-        </div>
+        </motion.div>
       </Container>
     </section>
   );

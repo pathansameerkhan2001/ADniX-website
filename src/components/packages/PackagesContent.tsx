@@ -1,19 +1,65 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, HelpCircle } from 'lucide-react';
 import { packagesData } from '@/data/packages';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { defaultViewport, fadeUp, smoothEase } from '@/components/motion/variants';
 
-export function PackagesPreview() {
+export function PackagesContent() {
+  const comparisonFeatures = [
+    {
+      feature: 'Website Scope',
+      starter: '4–5 Custom Pages',
+      growth: '8–10 Custom Pages',
+      scale: 'Unlimited / Custom CMS',
+    },
+    {
+      feature: 'Mobile Responsiveness',
+      starter: 'Yes (100% Mobile Ready)',
+      growth: 'Yes (Advanced Touch UX)',
+      scale: 'Yes (App-like Web App)',
+    },
+    {
+      feature: 'WhatsApp Integration',
+      starter: 'Direct Chat Button',
+      growth: 'Lead Capture + Instant Alerts',
+      scale: 'Automated CRM / Bot Workflow',
+    },
+    {
+      feature: 'Local Google SEO',
+      starter: 'Basic Meta & Map Embed',
+      growth: '#1 Page Google Maps Optimization',
+      scale: 'Aggressive Multi-Keyword SEO',
+    },
+    {
+      feature: 'Social Media Posts',
+      starter: 'Setup only',
+      growth: '12 Branded Creatives/mo',
+      scale: '20+ Posts + Video Reels',
+    },
+    {
+      feature: 'Ad Campaigns (Google/Meta)',
+      starter: 'Optional Add-on',
+      growth: 'Setup + Budget Advisory',
+      scale: 'Full Monthly Campaign Management',
+    },
+    {
+      feature: 'Technical Support',
+      starter: '30 Days Free',
+      growth: 'Ongoing Dedicated WhatsApp',
+      scale: 'Priority 24/7 SLA Support',
+    },
+  ];
+
   return (
-    <section className="py-20 sm:py-28 bg-ivory-200 border-b border-borderGray relative scroll-mt-20">
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-28 bg-ivory-50 min-h-screen">
       <Container size="xl">
+        {/* Page Hero */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -23,13 +69,13 @@ export function PackagesPreview() {
           <SectionHeading
             badge="Transparent Pricing"
             badgeVariant="gold"
-            title="Simple Plans for Every Stage"
-            subtitle="Choose the right digital growth package for your business needs. Transparent structures with zero hidden surprises."
+            title="Simple, High-Value Plans for Every Business Stage"
+            subtitle="Transparent pricing built for Kadapa and Andhra Pradesh businesses. Zero hidden maintenance costs, clear timelines, and measurable deliverables."
           />
         </motion.div>
 
-        {/* 3 Packages Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        {/* 3 Package Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mt-12 mb-20">
           {packagesData.map((pkg, idx) => {
             const isFeatured = pkg.isPopular;
 
@@ -132,7 +178,7 @@ export function PackagesPreview() {
                     >
                       What&apos;s Included:
                     </span>
-                    {pkg.features.slice(0, 6).map((feature, fIdx) => (
+                    {pkg.features.map((feature, fIdx) => (
                       <div key={fIdx} className="flex items-start gap-2.5 text-xs sm:text-sm">
                         <div
                           className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
@@ -173,29 +219,85 @@ export function PackagesPreview() {
           })}
         </div>
 
-        {/* View All Packages CTA */}
+        {/* Feature Comparison Table */}
+        <div className="my-16">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            variants={fadeUp}
+            className="text-center max-w-2xl mx-auto mb-10"
+          >
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-charcoal-900">
+              Detailed Feature Comparison
+            </h2>
+            <p className="text-sm text-muted mt-2">
+              Compare package specifications side-by-side to select the ideal plan for your growth goals.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={defaultViewport}
+            transition={{ duration: 0.5, ease: smoothEase }}
+            className="bg-white rounded-3xl border border-borderGray shadow-soft-sm overflow-hidden"
+          >
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="bg-ivory-100 border-b border-borderGray text-charcoal-900">
+                    <th className="py-4 px-6 font-bold">Key Capability</th>
+                    <th className="py-4 px-6 font-bold">Starter Plan</th>
+                    <th className="py-4 px-6 font-bold text-gold-600 bg-gold-500/10">Growth Plan (Recommended)</th>
+                    <th className="py-4 px-6 font-bold">Scale Plan</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-borderGray">
+                  {comparisonFeatures.map((row, idx) => (
+                    <tr key={idx} className="hover:bg-ivory-50 transition-colors">
+                      <td className="py-4 px-6 font-semibold text-charcoal-900">{row.feature}</td>
+                      <td className="py-4 px-6 text-muted-dark">{row.starter}</td>
+                      <td className="py-4 px-6 text-charcoal-950 font-medium bg-gold-500/5">{row.growth}</td>
+                      <td className="py-4 px-6 text-muted-dark">{row.scale}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Custom Plan / Enterprise CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={defaultViewport}
-          transition={{ duration: 0.45, delay: 0.35, ease: smoothEase }}
-          className="mt-12 text-center flex flex-col sm:flex-row items-center justify-center gap-4"
+          transition={{ duration: 0.5, delay: 0.15, ease: smoothEase }}
+          className="mt-16 bg-ivory-200 rounded-3xl p-8 sm:p-10 border border-borderGray flex flex-col md:flex-row items-center justify-between gap-6"
         >
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-gold-700 block mb-1">
+              Custom Enterprise Setup
+            </span>
+            <h3 className="text-xl sm:text-2xl font-bold text-charcoal-900 mb-2">
+              Have Multi-Location or Specialized Requirements?
+            </h3>
+            <p className="text-xs sm:text-sm text-muted max-w-xl">
+              We design tailor-made packages for hospitals with multiple branches, educational institutions, franchise chains, and high-volume local brands.
+            </p>
+          </div>
           <Button
-            variant="outline"
+            variant="primary"
             size="lg"
-            href="/packages"
+            href="/contact?package=custom"
             icon={<ArrowRight className="w-4 h-4" />}
-            className="border-borderGray text-charcoal-900 hover:bg-white font-medium"
+            className="font-semibold shrink-0"
           >
-            View Full Feature Comparison Table
+            Request Custom Quote
           </Button>
-
-          <span className="text-xs text-muted">
-            Need a custom enterprise setup? We tailor plans for multi-location businesses.
-          </span>
         </motion.div>
       </Container>
-    </section>
+    </div>
   );
 }

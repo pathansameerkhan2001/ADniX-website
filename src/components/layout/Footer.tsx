@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import {
   MapPin,
   Phone,
@@ -15,6 +18,7 @@ import {
 } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { Container } from '@/components/ui/Container';
+import { defaultViewport, fadeUp, smoothEase } from '@/components/motion/variants';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -36,7 +40,13 @@ export function Footer() {
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" />
 
       <Container size="xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-charcoal-800/80">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          variants={fadeUp}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-charcoal-800/80"
+        >
           {/* Column 1: Brand & Purpose (4 cols) */}
           <div className="lg:col-span-4 flex flex-col justify-between">
             <div>
@@ -202,10 +212,16 @@ export function Footer() {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom Bar: Copyright and credits */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={defaultViewport}
+          transition={{ duration: 0.5, delay: 0.2, ease: smoothEase }}
+          className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted"
+        >
           <p>
             © {currentYear} {siteConfig.legalName}. All Rights Reserved.
           </p>
@@ -213,7 +229,7 @@ export function Footer() {
             <span>Built with precision for businesses in</span>
             <span className="text-white font-medium">Kadapa, AP</span>
           </div>
-        </div>
+        </motion.div>
       </Container>
     </footer>
   );

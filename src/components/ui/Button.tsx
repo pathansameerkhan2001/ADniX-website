@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -23,10 +26,13 @@ export function Button({
   iconPosition = 'right',
   className,
   children,
+  onClick,
+  disabled,
+  type = 'button',
   ...props
 }: ButtonProps) {
   const baseClasses =
-    'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none';
+    'inline-flex items-center justify-center font-medium rounded-xl transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer';
 
   const variantClasses = {
     primary:
@@ -68,26 +74,46 @@ export function Button({
   if (href) {
     if (external) {
       return (
-        <a
+        <motion.a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.15 }}
           className={combinedClasses}
+          onClick={onClick as any}
         >
           {content}
-        </a>
+        </motion.a>
       );
     }
     return (
-      <Link href={href} className={combinedClasses}>
-        {content}
+      <Link href={href} className={combinedClasses} onClick={onClick as any}>
+        <motion.span
+          className="inline-flex items-center justify-center gap-2 w-full h-full"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.15 }}
+        >
+          {content}
+        </motion.span>
       </Link>
     );
   }
 
   return (
-    <button className={combinedClasses} {...props}>
+    <motion.button
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      whileHover={disabled ? undefined : { scale: 1.02 }}
+      whileTap={disabled ? undefined : { scale: 0.98 }}
+      transition={{ duration: 0.15 }}
+      className={combinedClasses}
+      {...(props as any)}
+    >
       {content}
-    </button>
+    </motion.button>
   );
 }

@@ -1,18 +1,12 @@
 import React from 'react';
-import { Container } from '@/components/ui/Container';
-import { PackagesPreview } from '@/components/home/PackagesPreview';
+import { PackagesContent } from '@/components/packages/PackagesContent';
 
 export const metadata = {
   title: 'Packages & Plans | ADNIX Digital Growth & Business Services',
-  description: 'Affordable, transparent digital growth packages for local businesses in Kadapa.',
+  description:
+    'Affordable, transparent digital growth packages for local businesses in Kadapa and Andhra Pradesh. Zero hidden surprises, full feature comparison.',
 };
 
 export default function PackagesPage() {
-  return (
-    <div className="pt-24 bg-ivory-50 min-h-screen">
-      <Container size="xl">
-        <PackagesPreview />
-      </Container>
-    </div>
-  );
+  return <PackagesContent />;
 }

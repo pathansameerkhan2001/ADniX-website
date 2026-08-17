@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import {
   Layout,
   ShieldCheck,
@@ -15,6 +18,7 @@ import { servicesData } from '@/data/services';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/Button';
+import { defaultViewport, fadeUp, smoothEase, staggerItem } from '@/components/motion/variants';
 
 export function ServicesPreview() {
   const getIcon = (iconName: string) => {
@@ -54,15 +58,28 @@ export function ServicesPreview() {
   return (
     <section id="services" className="py-20 sm:py-28 bg-ivory-50 border-b border-borderGray scroll-mt-20 relative overflow-hidden">
       <Container size="xl">
-        <SectionHeading
-          badge="End-to-End Growth Timeline"
-          badgeVariant="gold"
-          title="Everything You Need to Grow Online"
-          subtitle="From building your custom digital infrastructure to scaling customer acquisition, our 8-step connected services roadmap drives continuous business results."
-        />
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          variants={fadeUp}
+        >
+          <SectionHeading
+            badge="End-to-End Growth Timeline"
+            badgeVariant="gold"
+            title="Everything You Need to Grow Online"
+            subtitle="From building your custom digital infrastructure to scaling customer acquisition, our 8-step connected services roadmap drives continuous business results."
+          />
+        </motion.div>
 
         {/* Narrative Flow Banner: Build → Manage → Brand → Optimize → Promote → Advertise → Influence → Generate Leads */}
-        <div className="hidden lg:flex items-center justify-between bg-white rounded-2xl border border-borderGray px-6 py-3.5 mb-14 shadow-soft-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={defaultViewport}
+          transition={{ duration: 0.5, ease: smoothEase }}
+          className="hidden lg:flex items-center justify-between bg-white rounded-2xl border border-borderGray px-6 py-3.5 mb-14 shadow-soft-sm"
+        >
           {stageTags.map((tag, idx) => (
             <React.Fragment key={tag}>
               <div className="flex items-center gap-2">
@@ -78,7 +95,7 @@ export function ServicesPreview() {
               )}
             </React.Fragment>
           ))}
-        </div>
+        </motion.div>
 
         {/* CONNECTED SEQUENTIAL SERVICES ROADMAP */}
         {/* Desktop: 2-Row Sequential Connected Grid with Connecting Lines */}
@@ -88,9 +105,14 @@ export function ServicesPreview() {
             const stage = stageTags[idx];
 
             return (
-              <div
+              <motion.div
                 key={service.id}
-                className="group relative bg-white rounded-3xl border border-borderGray p-6 flex flex-col justify-between transition-all duration-300 hover:border-gold-500/70 hover:shadow-soft-lg"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={defaultViewport}
+                transition={{ duration: 0.45, delay: idx * 0.07, ease: smoothEase }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="group relative bg-white rounded-3xl border border-borderGray p-6 flex flex-col justify-between transition-colors duration-300 hover:border-gold-500/70 hover:shadow-soft-lg"
               >
                 <div>
                   {/* Top Node Header: Number + Icon + Action Stage Tag */}
@@ -131,7 +153,7 @@ export function ServicesPreview() {
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -142,8 +164,12 @@ export function ServicesPreview() {
             const stage = stageTags[idx];
 
             return (
-              <div
+              <motion.div
                 key={service.id}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={defaultViewport}
+                transition={{ duration: 0.4, delay: idx * 0.05, ease: smoothEase }}
                 className="relative bg-white rounded-2xl border border-borderGray p-4 sm:p-5 shadow-soft-sm"
               >
                 {/* Connecting Node on the Left Line */}
@@ -178,13 +204,19 @@ export function ServicesPreview() {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Bottom Explore All CTA */}
-        <div className="mt-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={defaultViewport}
+          transition={{ duration: 0.45, delay: 0.3, ease: smoothEase }}
+          className="mt-12 text-center"
+        >
           <Button
             variant="outline"
             size="lg"
@@ -194,9 +226,8 @@ export function ServicesPreview() {
           >
             Explore All 8 Services & Specifications
           </Button>
-        </div>
+        </motion.div>
       </Container>
     </section>
   );
 }
-
